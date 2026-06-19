@@ -20,3 +20,16 @@ Answer briefly, in your own words. This is graded on reasoning, not length.
    one where the graph is overkill.
 
 _Write your answers below._
+
+1. **The flywheel.**
+The most silent failure is trace flattening and outcome labeling. If `ToolError` or `Refusal` spans are accidentally marked `ok`, bad answers can become "chosen" DPO examples. I would detect this with quality checks comparing root outcomes against child span errors, plus alerts when error-rate or span-count distributions drift.
+
+2. **Decontamination.**
+Skipping decontamination leaks eval prompts into training. The model may memorize answers instead of learning the task, so offline metrics look inflated while performance on paraphrased or unseen customer questions stays weak.
+
+3. **Point-in-time.**
+Fraud scoring is dangerous without point-in-time joins. Joining a user's future lifetime spend, chargeback count, or final account balance into an earlier transaction would make offline accuracy look great but fail at serving time.
+
+4. **Graph vs vector.**
+- **KG excels at:** "Where does a widget ship from?", because it must connect `widget -> accessory -> hanoi`.
+- **KG is overkill for:** "What is the return window for a widget?", where one retrieved chunk is enough.
